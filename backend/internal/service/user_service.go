@@ -1,6 +1,7 @@
 package service
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"todo-app/internal/model"
 	"todo-app/internal/repository"
 )
@@ -27,4 +28,12 @@ func (service *UserService) GetUserByEmail(email string) (*model.User, error) {
 
 func (service *UserService) UpdateUser(id int, updates model.User) error {
 	return service.UserRepository.UpdateUser(id, updates)
+}
+
+func (service *UserService) GenerateHashedPassword(password string) (string, error) {
+	hashedPassowrd, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashedPassowrd), nil
 }

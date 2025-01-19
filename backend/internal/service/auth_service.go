@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"golang.org/x/crypto/bcrypt"
 	"todo-app/internal/model"
 )
 
@@ -24,7 +25,8 @@ func (service *AuthService) Authenticate(email, password string) (*model.User, e
 		return nil, errors.New("user not found")
 	}
 
-	if user.Password != password {
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
 		return nil, errors.New("invalid password")
 	}
 

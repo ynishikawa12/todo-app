@@ -41,6 +41,14 @@ func (handler *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := handler.UserService.GenerateHashedPassword(user.Password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to hash password"})
+		return
+	}
+
+	user.Password = hashedPassword
+
 	id, err := handler.UserService.CreateUser(&user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
