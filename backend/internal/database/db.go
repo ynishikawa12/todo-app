@@ -8,7 +8,7 @@ import (
 var DB *gorm.DB
 
 func Connect() error {
-	dsn := "root:ikuradon1123@tcp(localhost:3306)/todo_app?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:ikura@tcp(localhost:3306)/todo_app?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return err

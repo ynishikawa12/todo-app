@@ -2,6 +2,8 @@ package routes
 
 import (
 	"todo-app/internal/handler"
+	"todo-app/internal/repository"
+	"todo-app/internal/service"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -18,13 +20,24 @@ func SetupRouter() *gin.Engine {
 		AllowCredentials: true,
 	}))
 
-	userHandler := handler.NewUserHandler()
+	userRepository := repository.NewUserRepository()
+	userService := service.NewUserService(userRepository)
+	userHandler := handler.NewUserHandler(userService)
+
+	authService := service.NewAuthService(userRepository)
+	authHandler := handler.NewAuthHandler(authService)
+
+	taskRepository := repository.NewTaskRepository()
+	taskService := service.NewTaskService(taskRepository)
+	taskHandler := handler.NewTaskHandler(taskService)
+
 	r.POST("/users", userHandler.CreateUser)
 	r.GET("/users/:id", userHandler.GetUserByID)
 	r.PUT("/users/:id", userHandler.UpdateUser)
 
-	authHandler := handler.NewAuthHandler()
 	r.POST("/login", authHandler.Login)
+
+	r.GET("", taskHandler.CreateTask)
 
 	return r
 }

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"todo-app/internal/consts"
 	"todo-app/internal/model"
 	"todo-app/internal/service"
 
@@ -11,15 +12,15 @@ import (
 )
 
 type UserHandler struct {
-	UserService *service.UserService
+	UserService service.UserService
 }
 
-func NewUserHandler() *UserHandler {
-	return &UserHandler{UserService: service.NewUserService()}
+func NewUserHandler(s service.UserService) *UserHandler {
+	return &UserHandler{UserService: s}
 }
 
 func (handler *UserHandler) GetUserByID(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param(consts.UserIDParam))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
 		return
@@ -41,14 +42,6 @@ func (handler *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := handler.UserService.GenerateHashedPassword(user.Password)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to hash password"})
-		return
-	}
-
-	user.Password = hashedPassword
-
 	id, err := handler.UserService.CreateUser(&user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
@@ -59,7 +52,7 @@ func (handler *UserHandler) CreateUser(c *gin.Context) {
 }
 
 func (handler *UserHandler) UpdateUser(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param(consts.UserIDParam))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
 		return

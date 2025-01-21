@@ -9,11 +9,11 @@ import (
 )
 
 type AuthHandler struct {
-	AuthService *service.AuthService
+	AuthService service.AuthService
 }
 
-func NewAuthHandler() *AuthHandler {
-	return &AuthHandler{AuthService: service.NewAuthService()}
+func NewAuthHandler(service service.AuthService) *AuthHandler {
+	return &AuthHandler{AuthService: service}
 }
 
 func (handler *AuthHandler) Login(c *gin.Context) {
