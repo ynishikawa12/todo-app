@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"todo-app/internal/consts"
 	"todo-app/internal/handler"
 	"todo-app/internal/repository"
 	"todo-app/internal/service"
@@ -31,13 +32,24 @@ func SetupRouter() *gin.Engine {
 	taskService := service.NewTaskService(taskRepository)
 	taskHandler := handler.NewTaskHandler(taskService)
 
-	r.POST("/users", userHandler.CreateUser)
-	r.GET("/users/:id", userHandler.GetUserByID)
-	r.PUT("/users/:id", userHandler.UpdateUser)
+	taskTagRepository := repository.NewTaskTagRepository()
+	taskTagService := service.NewTaskTagSerivce(taskTagRepository)
+	taskTagHandler := handler.NewTaskTagHandler(taskTagService)
+
+	r.POST(consts.UserURL, userHandler.CreateUser)
+	r.GET(consts.UserURLWithID, userHandler.GetUserByID)
+	r.PUT(consts.UserURLWithID, userHandler.UpdateUser)
 
 	r.POST("/login", authHandler.Login)
 
-	r.GET("", taskHandler.CreateTask)
+	r.POST(consts.UserURLWithID+consts.TaskURL, taskHandler.CreateTask)
+	r.GET(consts.UserURLWithID+consts.TaskURL, taskHandler.GetTasksByUserID)
+	r.PUT(consts.UserURLWithID+consts.TaskURLWithID, taskHandler.UpdateTask)
+	r.DELETE(consts.UserURLWithID+consts.TaskURLWithID, taskHandler.DeleteTask)
+
+	r.GET(consts.TaskTagURL, taskTagHandler.GetTaskTags)
+	r.POST(consts.TaskTagURL, taskTagHandler.CreateTaskTag)
+	r.DELETE(consts.TaskTagURLWithID, taskTagHandler.DeleteTaskTag)
 
 	return r
 }

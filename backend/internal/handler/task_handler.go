@@ -18,7 +18,7 @@ func NewTaskHandler(s service.TaskService) *TaskHandler {
 	return &TaskHandler{TaskService: s}
 }
 
-func (handler *TaskHandler) GetTaskByUserID(c *gin.Context) {
+func (handler *TaskHandler) GetTasksByUserID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param(consts.UserIDParam))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"errror": "invalid user ID"})
@@ -34,11 +34,18 @@ func (handler *TaskHandler) GetTaskByUserID(c *gin.Context) {
 }
 
 func (handler *TaskHandler) CreateTask(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param(consts.UserIDParam))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user ID"})
+		return
+	}
+
 	var task model.Task
 	if err := c.ShouldBindJSON(&task); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	task.UserID = id
 
 	if err := handler.TaskService.CreateTask(&task); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create task"})
