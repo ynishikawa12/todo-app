@@ -2,10 +2,15 @@ package main
 
 import (
 	"log"
+	_ "todo-app/docs"
 	"todo-app/internal/database"
 	"todo-app/internal/routes"
 )
 
+// @title           TodoAppAPI
+// @version         1.0
+// @host           localhost:8080
+// @BasePath       /
 func main() {
 	err := database.Connect()
 	if err != nil {

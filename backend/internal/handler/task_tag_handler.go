@@ -30,7 +30,7 @@ func (handler *TaskTagHandler) GetTaskTags(c *gin.Context) {
 }
 
 func (handler *TaskTagHandler) CreateTaskTag(c *gin.Context) {
-	var taskTag model.TaskTag
+	var taskTag model.Tag
 	if err := c.ShouldBindJSON(&taskTag); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

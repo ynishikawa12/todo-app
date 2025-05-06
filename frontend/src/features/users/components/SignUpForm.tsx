@@ -1,18 +1,23 @@
 import { useActionState } from "react";
-import { TextField, Button, Typography, Box } from "@mui/material";
-import { loginApi } from "../api/loginApi";
+import { Box, TextField, Typography, Button } from "@mui/material";
+import { signUpApi } from "../api/signUpApi";
 import { ApiResultMessage } from "../../../components/ErrorMessage";
 import { ApiResult } from "../../../types/types";
 
+const username = "username";
+const email = "email";
+const password = "password";
+
 const action = async (_: ApiResult, formData: FormData): Promise<ApiResult> => {
-  return loginApi({
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+  return await signUpApi({
+    username: formData.get(username) as string,
+    email: formData.get(email) as string,
+    password: formData.get(password) as string,
   });
 };
 
-export const LoginForm = () => {
-  const [result, login, isPending] = useActionState<ApiResult, FormData>(
+export const SignUpForm = () => {
+  const [result, signUp, isPending] = useActionState<ApiResult, FormData>(
     action,
     { success: false, message: "" }
   );
@@ -21,15 +26,22 @@ export const LoginForm = () => {
     <>
       <Box display="flex" flexDirection="column" alignItems="center" mt={8}>
         <Typography variant="h4" gutterBottom>
-          Login
+          SignUp
         </Typography>
-        <form action={login}>
+        <form action={signUp}>
+          <TextField
+            label="Username"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            name={username}
+          />
           <TextField
             label="Email"
             variant="outlined"
             fullWidth
             margin="normal"
-            name="email"
+            name={email}
           />
           <TextField
             label="Password"
@@ -37,7 +49,7 @@ export const LoginForm = () => {
             variant="outlined"
             fullWidth
             margin="normal"
-            name="password"
+            name={password}
           />
           <Button
             type="submit"
@@ -46,7 +58,7 @@ export const LoginForm = () => {
             sx={{ mt: 2 }}
             disabled={isPending}
           >
-            {isPending ? "Loading..." : "Login"}
+            {isPending ? "Loading..." : "SignUp"}
           </Button>
         </form>
       </Box>

@@ -1,7 +1,10 @@
-import LoginForm from "../features/users/components/LoginForm";
+import { Container } from "@mui/material";
+import { LoginForm } from "../features/users/components/LoginForm";
 
-const Login = () => {
-  return <LoginForm />;
+export const Login = () => {
+  return (
+    <Container maxWidth="sm">
+      <LoginForm />
+    </Container>
+  );
 };
-
-export default Login;

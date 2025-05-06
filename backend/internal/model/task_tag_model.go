@@ -2,8 +2,8 @@ package model
 
 import "time"
 
-type TaskTag struct {
+type Tag struct {
 	ID        int       `json:"id" gorm:"primaryKey"`
-	Name      string    `json:"user_id"`
+	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 }

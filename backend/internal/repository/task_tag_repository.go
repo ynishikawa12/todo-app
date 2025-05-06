@@ -3,7 +3,7 @@ package repository
 import "todo-app/internal/model"
 
 type TaskTagRepository interface {
-	GetTaskTags() ([]model.TaskTag, error)
-	CreateTaskTag(*model.TaskTag) error
+	GetTaskTags() ([]model.Tag, error)
+	CreateTaskTag(*model.Tag) error
 	DeleteTaskTag(ID int) error
 }

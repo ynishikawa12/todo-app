@@ -15,15 +15,15 @@ func NewTaskTagRepository() *TaskTagRepositoryImpl {
 	return &TaskTagRepositoryImpl{DB: database.DB}
 }
 
-func (repo *TaskTagRepositoryImpl) GetTaskTags() ([]model.TaskTag, error) {
-	var tags []model.TaskTag
+func (repo *TaskTagRepositoryImpl) GetTaskTags() ([]model.Tag, error) {
+	var tags []model.Tag
 	if err := repo.DB.Find(&tags).Error; err != nil {
 		return nil, err
 	}
 	return tags, nil
 }
 
-func (repo *TaskTagRepositoryImpl) CreateTaskTag(taskTag *model.TaskTag) error {
+func (repo *TaskTagRepositoryImpl) CreateTaskTag(taskTag *model.Tag) error {
 	if err := repo.DB.Create(&taskTag).Error; err != nil {
 		return err
 	}

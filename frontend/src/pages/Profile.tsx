@@ -1,5 +1,10 @@
-const Profile = () => {
-  return <>test</>;
-};
+import { Container } from "@mui/material";
+import { ProfileForm } from "../features/users/components/ProfileForm";
 
-export default Profile;
+export const Profile = () => {
+  return (
+    <Container maxWidth="sm">
+      <ProfileForm />
+    </Container>
+  );
+};

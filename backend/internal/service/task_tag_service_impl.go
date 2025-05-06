@@ -13,11 +13,11 @@ func NewTaskTagSerivce(repo repository.TaskTagRepository) *TaskTagServiceImpl {
 	return &TaskTagServiceImpl{TaskTagRepository: repo}
 }
 
-func (service *TaskTagServiceImpl) GetTaskTags() ([]model.TaskTag, error) {
+func (service *TaskTagServiceImpl) GetTaskTags() ([]model.Tag, error) {
 	return service.TaskTagRepository.GetTaskTags()
 }
 
-func (service *TaskTagServiceImpl) CreateTaskTag(taskTag *model.TaskTag) error {
+func (service *TaskTagServiceImpl) CreateTaskTag(taskTag *model.Tag) error {
 	return service.TaskTagRepository.CreateTaskTag(taskTag)
 }
 
